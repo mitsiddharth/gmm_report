@@ -131,27 +131,30 @@ Figure 1 shows the overall accuracy of the labeling algorithm along with various
 {\textbf {Language prediction without blogger prior: }}  First, the language prediction task was run without taking the blogger prior into consideration. The results are summarized in Table 3.
 
 
-\begin{table}
+\begin{table*}
 \begin{center}
 \small
-\begin{tabular}{|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\textbf{Language} & \textbf{Accuracy} \\
+\textbf{} & \textbf{English} & \textbf {German} & \textbf{Spanish} & \textbf{Dutch} & \textbf{French} & \textbf{Precision} \\
 \hline
-English & 90.24\\
-Spanish & 94.04 \\
-German & 90.36 \\
-French & 92.83 \\
-Dutch & 94.11 \\ \hline
-\multicolumn{2}{|c|}{\textbf{Overall accuracy = 92.26}} \\\hline
+English    &        380       &       1          &        5         &       2        &        3        &      \textbf{97.19} \\
+German      &         17       &     363          &        0         &       6        &        2        &      \textbf{93.56} \\
+Spanish    &         19       &       6          &      399         &       5        &        7        &      \textbf{91.53} \\
+Dutch      &         23       &       7          &        4         &     320        &        2        &      \textbf{89.88} \\
+French     &         28       &       8          &        7         &       3        &      370        &      \textbf{88.94} \\
+\hline
+\textbf{Recall}&\textbf{81.37}& \textbf{94.29}   & \textbf{96.144}  & \textbf{95.24} & \textbf{96.35}  &      \textbf{} \\
+\hline
+\multicolumn{7}{|c|}{\textbf{Overall accuracy = 92.2}} \\\hline
 \end{tabular}
-\caption{\footnotesize Performance of language prediction task based on our model without using blogger prior}
+\caption{\footnotesize Performance of language prediction task based on our model without using blogger prior. The leftmost column represents the actual label, topmost row represents the predicted labels. The numbers denote the number of tweets classified.}
 \end{center}
-\end{table}
+\end{table*}
 
-It can be seen from Table 3 that, the model identifies language with more than 92\% accuracy overall. However, this can still be improved by using the blogger prior.
+It can be seen from Table 3 that, the model identifies the correct language with more than 92\% accuracy overall. However, this can still be improved by using the blogger prior.
 
-Another factor that affected the accuracy was the number of n-grams to be considered while generating the language model. TextCat uses these n-grams to detect the languages. We found that the top 400 n-grams were giving best results. This can be attributed to the fact that, as the number of n-grams considered increases, there are more chances of errors as well, since the models were generated based on a heuristic. Figure 2 shows the accuracy as the number of n-grams increases. We can see clearly that the highest accuracy is achieved for the case when we consider the top 400 n-grams.
+Another factor that affected the accuracy was the number of n-grams to be considered while generating the language model. TextCat uses these n-grams to detect the languages. We found that the top 500 n-grams were giving best results. This can be attributed to the fact that, as the number of n-grams considered increases, there are more chances of errors as well, since the models were generated based on a heuristic. Figure 2 shows the accuracy as the number of n-grams increases. We can see clearly that the highest accuracy is achieved for the case when we consider the top 500 n-grams.
 
 \begin{figure}[ht]
 \includegraphics[scale=0.35]{ngramVsAccuracy.png}
@@ -190,10 +193,6 @@ One way to improve the model is by using geo-located tweets. Since people speaki
 \end{figure*}
 
 In order to achieve this, the surface of the earth was divided into $1^{\circ}$ by $1^{\circ}$ geo-desic cells (similar to what was done in Wing and Baldridge (2011)). Tweets in each cell were then labeled using the High-confidence Dictionary-based approach. This gives us the probability distribution of languages for a particular cell. In other words, we have the relative frequencies of each language's occurrence in a given cell. We are likely to get better models for a language in regions where the relative frequency of that language is very high. For our experiments, optimal results were obtained when this threshold was set to 0.6.
-
-As a first step, the relative frequencies of languages was calculated for every $1^{\circ}$ by $1^{\circ}$ geo-desic grid. To help analyze the tweets, some plots like the one in Figure 3 were obtained. For a particular language, this plot would show the cells on earth which have a very high relative frequency. Additional details like the actual text of all tweets that were used in the training phase, and the text of the tweets that were labeled as a particular language are also shown. During the analysis, a potential issue was identified. It was seen that there were many regions in Brazil where the relative frequency of English tweets were high. However, inspection of the actual text of the tweets coming from this region revealed that there were words like ``do", ``e", etc. that were frequently used in those tweets, and those were identified as English words by the dictionary-based approach.
-
-The next step is to build a better model out of the tweets from ``highly reliable" regions for each language. Preliminary code for this task was written and an experiment was run on some initial dataset. Results looked positive, with more than 96\% accuracy in Spanish and a slightly better overall accuracy. However, a more thorough execution of this task would tell the actual result. Due to time constraints, this could not be completed for this report.
 
 
 \section {Future Work}

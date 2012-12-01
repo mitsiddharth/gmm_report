@@ -117,16 +117,16 @@ The number of tweets that were labeled (the ones that were used to build the lan
 
 
 \section{Results}
-In this section, the results of certain experiments are reported. The first step in proposed approach is to identify the language of tweets based on the number (and the proportion) of valid words. A sample test data \footnote[3]{The dataset was taken from the test data used in http://ilps.science.uva.nl/resources/twitterlid} was taken, and this method of labeling was employed on that sample set. The dataset contains 1987 tweets, which have been labeled manually with the language. For testing puroses, the labels were removed, and the tweets were fed as input to our algorithm.
+In this section, the results of certain experiments are reported. The first step in proposed approach is to identify the language of tweets based on the number (and the proportion) of valid words. Some sample data \footnote[3]{The dataset was taken from the development data used in http://ilps.science.uva.nl/resources/twitterlid} was taken, and this method of labeling was employed on that sample set. The dataset contains 401 tweets, which have been labeled manually with the language. For this experiment, the labels were removed, and the tweets were fed as input to our algorithm.
 
 \begin{figure}[ht]
-\includegraphics[scale=0.18]{accuracy_words.png}
+\includegraphics[scale=0.4]{accuracy_words.png}
 \caption{\footnotesize Accuracy of labeling method based on number of valid words in a tweet}
 \label{fig:s2}
 \end{figure}
 
 
-Figure 1 shows the overall accuracy of the labeling algorithm along with various values for the threshold for minimum number of valid words in a tweet required for classification. It also shows the number of tweets that were actually classified, that is, the number of tweets that were not labeled ``unknown''. As expected, the accuracy of labeling increases as N increases (the smooth line without dots, in Figure 1). We can observe that at N=4, the accuracy is above 90\%, and that more than 69\% of tweets were labeled. As N increases, the number of labeled tweets falls rapidly (the line with dots, in Figure 1), probably because of the nature of the dataset. This experiment serves as a proof of concept for the effectiveness of labeling based on number of valid words in a tweet. The results are promising, and a large number of labeled tweets were obtained using this method.
+Figure 1 shows the overall accuracy of the labeling algorithm along with various values for the threshold for minimum number of valid words in a tweet required for classification. It also shows the number of tweets that were actually classified, that is, the number of tweets that were not ignored. As expected, the accuracy of labeling increases as N increases (the smooth line with `X's, in Figure 1). We can observe that at N=4, the accuracy is above 89\%, and that more than 75\% of tweets were labeled. As N increases, the number of labeled tweets falls rapidly (line with squares, in Figure 1). This experiment serves as a proof of concept for the effectiveness of labeling based on number of valid words in a tweet. The results are promising, and a large number of labeled tweets were obtained using this method.
 
 {\textbf {Language prediction without blogger prior: }}  First, the language prediction task was run without taking the blogger prior into consideration. The results are summarized in Table 3.
 
@@ -139,7 +139,7 @@ Figure 1 shows the overall accuracy of the labeling algorithm along with various
 \textbf{} & \textbf{English} & \textbf {German} & \textbf{Spanish} & \textbf{Dutch} & \textbf{French} & \textbf{Precision} \\
 \hline
 English    &        380       &       1          &        5         &       2        &        3        &      \textbf{97.19} \\
-German      &         17       &     363          &        0         &       6        &        2        &      \textbf{93.56} \\
+German     &         17       &     363          &        0         &       6        &        2        &      \textbf{93.56} \\
 Spanish    &         19       &       6          &      399         &       5        &        7        &      \textbf{91.53} \\
 Dutch      &         23       &       7          &        4         &     320        &        2        &      \textbf{89.88} \\
 French     &         28       &       8          &        7         &       3        &      370        &      \textbf{88.94} \\

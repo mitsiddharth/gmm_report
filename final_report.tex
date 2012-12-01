@@ -152,6 +152,29 @@ French     &         28       &       8          &        7         &       3   
 \end{center}
 \end{table*}
 
+\begin{table*}
+\begin{center}
+\small
+\begin{tabular}{|c||c|c||c|c||c|c||c|c|}
+\hline
+\textbf{Language} & \multicolumn{2}{|c||}{\textbf {No geo, no BP}} & \multicolumn{2}{|c||}{\textbf{No geo, with BP}} & \multicolumn{2}{|c||}{\textbf{Geo, no BP}} & \multicolumn{2}{|c|}{\textbf{Geo, BP}} \\
+\hline
+ & Precision & Recall & Precision & Recall & Precision & Recall & Precision & Recall \\
+\hline
+English & & & & & & & & \\
+German & & & & & & & & \\
+Spanish & & & & & & & & \\
+French & & & & & & & & \\
+Dutch & & & & & & & & \\
+\hline
+
+\hline
+\end{tabular}
+\caption{\footnotesize Summary of results.}
+\end{center}
+\end{table*}
+
+
 It can be seen from Table 3 that, the model identifies the correct language with more than 92\% accuracy overall. However, this can still be improved by using the blogger prior.
 
 Another factor that affected the accuracy was the number of n-grams to be considered while generating the language model. TextCat uses these n-grams to detect the languages. We found that the top 500 n-grams were giving best results. This can be attributed to the fact that, as the number of n-grams considered increases, there are more chances of errors as well, since the models were generated based on a heuristic. Figure 2 shows the accuracy as the number of n-grams increases. We can see clearly that the highest accuracy is achieved for the case when we consider the top 500 n-grams.

@@ -114,8 +114,6 @@ Testing & 1987  \\ \hline
 The number of tweets that were labeled (the ones that were used to build the language model) for each language is tabulated in Table 1.
 
 
-
-
 \section{Results}
 In this section, the results of certain experiments are reported. The first step in proposed approach is to identify the language of tweets based on the number (and the proportion) of valid words. Some sample data \footnote[3]{The dataset was taken from the development data used in http://ilps.science.uva.nl/resources/twitterlid} was taken, and this method of labeling was employed on that sample set. The dataset contains 401 tweets, which have been labeled manually with the language. For this experiment, the labels were removed, and the tweets were fed as input to our algorithm.
 
@@ -128,8 +126,9 @@ In this section, the results of certain experiments are reported. The first step
 
 Figure 1 shows the overall accuracy of the labeling algorithm along with various values for the threshold for minimum number of valid words in a tweet required for classification. It also shows the number of tweets that were actually classified, that is, the number of tweets that were not ignored. As expected, the accuracy of labeling increases as N increases (the smooth line with `X's, in Figure 1). We can observe that at N=4, the accuracy is above 89\%, and that more than 75\% of tweets were labeled. As N increases, the number of labeled tweets falls rapidly (line with squares, in Figure 1). This experiment serves as a proof of concept for the effectiveness of labeling based on number of valid words in a tweet. The results are promising, and a large number of labeled tweets were obtained using this method.
 
-{\textbf {Language prediction without blogger prior: }}  First, the language prediction task was run without taking the blogger prior into consideration. The results are summarized in Table 3.
+{\textbf {Baseline: }}  In order to measure the effectiveness of our results, the dictionary based approach was used as a baseline method. In this approach, the tweet is labeled with the language from which it has the maximum number of valid words. The set of valid words for each language is obtained from the dictionary of that language. For example, if a tweet contains 3 English words, 1 Spanish word, then that tweet would be classified as an English tweet by this method. This is a fast and simple method to classifiy tweets -- however it is not suitable for Twitter dataset because of the slang and shortened words, which are not found in dictionaries. This is seen clearly from the classification accuracy shown in Table 5. It fails to achieve an overall accuracy of 90\% percent, which has been achieved by the state-of-the-art techniques.
 
+{\textbf {Language prediction without blogger prior: }}  First, the language prediction task was run without taking the blogger prior into consideration. The results are summarized in Table 3.
 
 \begin{table*}
 \begin{center}
@@ -161,13 +160,13 @@ French     &         28       &       8          &        7         &       3   
 \hline
  & Precision & Recall & Precision & Recall & Precision & Recall & Precision & Recall \\
 \hline
-English & & & & & & & & \\
-German & & & & & & & & \\
-Spanish & & & & & & & & \\
-French & & & & & & & & \\
-Dutch & & & & & & & & \\
+English & 96.93 & 83.85 & 92.68 & 86.36 & & & & \\
+German & 92.78 & 94.74 & 89.16 & 91.36 & & & & \\
+Spanish & 91.72 & 96.16 & 96.42 & 96.43 & & & & \\
+French & 89.18 & 96.16 & 89.29 & 92.59 & & & & \\
+Dutch & 91.97 & 93.50 & 94.12 & 95.52 & & & & \\
 \hline
-
+\textbf{Overall accuracy} & \multicolumn{2}{|c||}{\textbf{92.702}} & \multicolumn{2}{|c||}{\textbf{96.76}} & \multicolumn{2}{|c||}{1} & \multicolumn{2}{|c|}{1} \\
 \hline
 \end{tabular}
 \caption{\footnotesize Summary of results.}
@@ -219,10 +218,12 @@ In order to achieve this, the surface of the earth was divided into $1^{\circ}$ 
 
 Figure 3 plots the $1^{\circ}$ by $1^{\circ}$ cells which have a high relative frequency for tweets labeled as ``Unknown'' by the High-confidence Dictionary-based approach. We can see clearly that regions like Saudi Arabia, China, Japan Korea, Thailand and parts of Europe are the predominant areas from where the tweets are labeled ``Unknown''. Similar plots were obtained for other languages as well, and the plots showed that using tweets from regions having high relative frequency for a language were much clearer and helped in reducing the noise. (This was visually verified, based on the language and the regions plotted on the map. For example, the ``highly reliable'' regions for Spanish tweets had a lot of cells in Mexico, Spain and South American regions. However, if we plotted all tweets labeled Spanish, we got a plot which contained a lot of noise -- mostly because of some isolated tweets or wrongly-labeled tweets).
 
-The next step is to build a better model out of the tweets from ``highly reliable" regions for each language. Preliminary code for this task was written and an experiment was run on some initial dataset. Results looked positive, with more than 96\% accuracy in Spanish and a slightly better overall accuracy. However, a more thorough execution of this task would tell the actual result. Due to time constraints, this could not be completed for this report.
+The character n-grams collected from these ``highly reliable'' regions were then used in the model to predict languages in tweets. The results are reported in Table 3. We can see clearly that collecting training data from only the relevant regions increases the accuracy of prediction slightly. As in the other methods, when combined with the blogger prior of the tweet authors, the accuracy improves greatly. This approach gives the best overall accuracy for language identification task.
 
-\section {Future Work}
-The next step would be to organize the data for the last experiment and run on a dataset that contains a large number of tweets from each language. It would be interesting to see how the accuracy of the ``Unknown'' model is. Since there is no dataset to verify this, one proposed method is to take a set of geo-located tweets, and see where each language is coming from. This would give us an overall idea of how the model is doing.
+\section {Discussion}
+In this section, some observations that were made while running the experiments are discussed. First of all, it is clear from the results section that, if we have large amounts of data that might not be entirely correctly labeled, it is still enough to train a model that performs very well. The task of language identification cannot be simply solved by counting the number of valid words from a language and reporting the language with the most words. We could find a lot of tweets which were misspelt, but were correctly labeled by our approach. These tweets would not be correctly predicted by the simple dictionary approach. For example, a tweet that contained just the word ``incredile'' (note the missing `b') was labeled as English by our approach, but was labeled as Unknown by the dictionary based method. On manual inspection, we could find quite a few tweets (at least in English) that were misspelt.
+
+
 
 \section{Conclusion}
 In this paper, an unsupervised method for labeling tweets with language was described. It is a very conservative and simple approach which does not necessarily label all the tweets in the dataset. It works by labeling the tweets which contain enough number of valid words from a language, and also meets the criterion of the proportion of valid words in the tweet. When there are a large number of tweets available, a considerable amount of labeled data is obtained. We also show that, the labeled data obtained by this method is very reliable and performs on par with the existing methods for language detection. Thus, the tedious task of manually labeling the tweets with languages can be replaced with our unsupervised labeling algorithm which depends only on the dictionary of a language. It was also shown that an overall accuracy of around 92\% was achieved for the task of language detection. Results were shown for five languages -- English, Spanish, French, German and Dutch.

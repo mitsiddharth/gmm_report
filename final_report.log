@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.1415926-1.40.9 (Web2C 7.5.7) (format=pdflatex 2012.10.5)  1 DEC 2012 01:20
+This is pdfTeXk, Version 3.1415926-1.40.9 (Web2C 7.5.7) (format=pdflatex 2012.10.5)  1 DEC 2012 16:18
 entering extended mode
  %&-line parsing enabled.
 **final_report.tex
@@ -226,21 +226,21 @@ Overfull \hbox (3.6093pt too wide) in paragraph at lines 123--124
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 131.
 [4 <./accuracy_words.png (PNG copy)>]
+Overfull \hbox (3.826pt too wide) in paragraph at lines 180--193
+ [] 
+ []
+
 <ngramVsAccuracy.png, id=24, 578.16pt x 433.62pt>
 File: ngramVsAccuracy.png Graphic file (type png)
  <use ngramVsAccuracy.png>
-Underfull \hbox (badness 4531) in paragraph at lines 189--190
+Underfull \hbox (badness 4531) in paragraph at lines 209--210
 []\OT1/ptm/b/n/10.95 Language pre-dic-tion us-ing blog-ger prior:
  []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 <unknown_plot.png, id=25, 961.5925pt x 403.5075pt>
 File: unknown_plot.png Graphic file (type png)
  <use unknown_plot.png>
-Overfull \hbox (11.04008pt too wide) in paragraph at lines 213--214
+Overfull \hbox (11.04008pt too wide) in paragraph at lines 233--234
 [][] 
  []
 
@@ -248,46 +248,49 @@ Overfull \hbox (11.04008pt too wide) in paragraph at lines 213--214
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [6]
-Underfull \hbox (badness 7685) in paragraph at lines 239--243
+Underfull \hbox (badness 7685) in paragraph at lines 259--263
 []\OT1/ptm/m/n/10 Chen, Ed-win.  2011.  Fil-ter-ing for En-glish
  []
 
 
-Underfull \hbox (badness 1400) in paragraph at lines 239--243
+Underfull \hbox (badness 1400) in paragraph at lines 259--263
 \OT1/ptm/m/n/10 ter.  \OT1/ptm/m/it/10 http://blog.echen.me/2011/05/01/unsuperv
 ised-
  []
 
 
-Overfull \hbox (32.91714pt too wide) in paragraph at lines 251--255
+Overfull \hbox (32.91714pt too wide) in paragraph at lines 271--275
 \OT1/ptm/m/it/10 half[]of[]messages[]on[]twitter[]are[]not[]in[]english[]201002
 24.pdf\OT1/ptm/m/n/10 . 
  []
 
-[7 <./unknown_plot.png (PNG copy)>] (./final_report.aux) ) 
+[7 <./unknown_plot.png (PNG copy)>] (./final_report.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
  1765 strings out of 493876
  22622 string characters out of 1147346
- 88804 words of memory out of 3000000
+ 90610 words of memory out of 3000000
  5015 multiletter control sequences out of 10000+50000
  31033 words of font info for 71 fonts, out of 3000000 for 5000
  714 hyphenation exceptions out of 8191
  27i,9n,20p,1507b,308s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/v/filer4b/software/
-texlive/2008/texmf-dist/fonts/enc/dvips/base/8r.enc}</v/filer4b/software/texliv
-e/2008/texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb></v/filer4b/software/texliv
-e/2008/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></v/filer4b/software/texlive
-/2008/texmf-dist/fonts/type1/bluesky/cm/cmmi9.pfb></v/filer4b/software/texlive/
-2008/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></v/filer4b/software/texlive/2
-008/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></v/filer4b/software/texlive/200
-8/texmf-dist/fonts/type1/bluesky/cm/cmr9.pfb></v/filer4b/software/texlive/2008/
-texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></v/filer4b/software/texlive/2008/
-texmf-dist/fonts/type1/bluesky/cm/cmsy8.pfb></v/filer4b/software/texlive/2008/t
-exmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></v/filer4b/software/texlive/2008/
-texmf-dist/fonts/type1/urw/times/utmb8a.pfb></v/filer4b/software/texlive/2008/t
-exmf-dist/fonts/type1/urw/times/utmr8a.pfb></v/filer4b/software/texlive/2008/te
-xmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_report.pdf (7 pages, 487330 bytes).
+{/v/filer4b/software/texlive/2008/texmf-dist/fonts/enc/dvips/base/8r.enc}</v/
+filer4b/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb></v/
+filer4b/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></v/f
+iler4b/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmmi9.pfb></v/fi
+ler4b/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></v/fil
+er4b/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></v/filer
+4b/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmr9.pfb></v/filer4b
+/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></v/filer4b
+/software/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmsy8.pfb></v/filer4b/
+software/texlive/2008/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></v/filer4b
+/software/texlive/2008/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></v/filer4b/
+software/texlive/2008/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></v/filer4b/s
+oftware/texlive/2008/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on final_report.pdf (7 pages, 487941 bytes).
 PDF statistics:
  78 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)

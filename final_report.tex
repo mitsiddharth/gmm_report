@@ -167,12 +167,32 @@ Spanish & & & & & & & & \\
 French & & & & & & & & \\
 Dutch & & & & & & & & \\
 \hline
-
+\textbf{Overall accuracy} & \multicolumn{2}{|c||}{} & \multicolumn{2}{|c||}{} & \multicolumn{2}{|c||}{} & \multicolumn{2}{c|}{} \\
 \hline
 \end{tabular}
 \caption{\footnotesize Summary of results.}
 \end{center}
 \end{table*}
+
+\begin{table}
+\begin{center}
+\small
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Approach} & \textbf{Accuracy} \\
+\hline
+Dictionary based baseline & 71.67 \\
+Carter et al (2012) with blogger prior & 97.4 \\
+Carter et al (2012) without blogger prior & 92.4 \\
+Our model with blogger prior ($w$ = 1) & 95.76 \\
+Our model with tweet text only ($w$ = 0)& 92.2 \\
+Our model with combined prior ($w$ = 0.4) & \textbf{97.51} \\
+
+\hline
+\end{tabular}
+\caption{\footnotesize Comparison with other approaches and baselines}
+\end{center}
+\end{table}
 
 
 It can be seen from Table 3 that, the model identifies the correct language with more than 92\% accuracy overall. However, this can still be improved by using the blogger prior.

@@ -29,7 +29,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This paper describes an approach to tackle the problem of language detection in tweets. Analysis of Twitter data can be difficult because of the constraint on the length of tweets, and also because of multi-lingual posts. Knowledge about the language of a tweet can help greatly in processing the data better -- especially in tasks like Twitter sentiment analysis. An important task in training machine learning algorithms for this task is to get labeled data. This paper describes an approach to automatically label twitter data in an unsupervised manner. The labelled data obtained by this unsupervised labeling algorithm is then used to create a language model, which is utilized to detect languages in tweets. The technique presented in this paper gives promising results, and can be easily extended to other languages with minimum effort. Further extensions to the labeling approach using geo-located tweets are suggested; training our model using tweets collected from ``reliable'' regions that have a high proportion of speakers of a language further increases the accuracy of language detection.
+This paper describes an approach to tackle the problem of language detection in tweets. Analysis of Twitter data can be difficult because of the constraint on the length of tweets, and also because of multi-lingual posts. Knowledge about the language of a tweet can help greatly in processing the data better -- especially in tasks like Twitter sentiment analysis. An important task in training machine learning algorithms for this task is to get labeled data. This paper describes an approach to automatically label twitter data in an unsupervised manner. The labeled data obtained by this unsupervised labeling algorithm is then used to create a language model, which is utilized to detect languages in tweets. The technique presented in this paper gives promising results, and can be easily extended to other languages with minimum effort. Further extensions to the labeling approach using geo-located tweets are suggested; training our model using tweets collected from ``reliable'' regions that have a high proportion of speakers of a language further increases the accuracy of language detection.
 \end{abstract}
 
 \section{Introduction}
@@ -160,17 +160,13 @@ French     &         28       &       8          &        7         &       3   
 \hline
  & Precision & Recall & Precision & Recall & Precision & Recall & Precision & Recall \\
 \hline
-English & 96.93 & 83.85 & 92.68 & 86.36 & & & & \\
-German & 92.78 & 94.74 & 89.16 & 91.36 & & & & \\
-Spanish & 91.72 & 96.16 & 96.42 & 96.43 & & & & \\
-French & 89.18 & 96.16 & 89.29 & 92.59 & & & & \\
-Dutch & 91.97 & 93.50 & 94.12 & 95.52 & & & & \\
+English   & 97.19 & 81.37 & 92.68 & 86.36 & 96.93 & 83.85 & 95.12 & 90.69 \\
+German    & 93.56 & 94.28 & 89.16 & 91.36 & 92.78 & 94.74 & 98.79 & 98.79 \\
+Spanish   & 91.51 & 96.14 & 96.42 & 96.43 & 91.72 & 96.16 & 97.62 & 98.61 \\
+French    & 88.94 & 96.35 & 89.29 & 92.59 & 89.18 & 96.61 & 95.23 & 98.53 \\
+Dutch     & 89.89 & 95.24 & 94.12 & 95.52 & 91.97 & 93.50 & 98.53 & 98.7 \\
 \hline
-<<<<<<< HEAD
-\textbf{Overall accuracy} & \multicolumn{2}{|c||}{} & \multicolumn{2}{|c||}{} & \multicolumn{2}{|c||}{} & \multicolumn{2}{c|}{} \\
-=======
-\textbf{Overall accuracy} & \multicolumn{2}{|c||}{\textbf{92.702}} & \multicolumn{2}{|c||}{\textbf{96.76}} & \multicolumn{2}{|c||}{1} & \multicolumn{2}{|c|}{1} \\
->>>>>>> 611632e2dc179e56a3b358abb1fd212825843f8a
+\textbf{Overall accuracy} & \multicolumn{2}{|c||}{\textbf{92.2}} & \multicolumn{2}{|c||}{\textbf{96.76}} & \multicolumn{2}{|c||}{\textbf{92.702}} & \multicolumn{2}{|c|}{\textbf{97.01}} \\
 \hline
 \end{tabular}
 \caption{\footnotesize Summary of results.}
@@ -189,7 +185,7 @@ Carter et al (2012) with blogger prior & 97.4 \\
 Carter et al (2012) without blogger prior & 92.4 \\
 Our model with blogger prior ($w$ = 1) & 95.76 \\
 Our model with tweet text only ($w$ = 0)& 92.2 \\
-Our model with combined prior ($w$ = 0.4) & \textbf{97.51} \\
+Our model with combined prior ($w$ = 0.4) & 97.01 \\
 
 \hline
 \end{tabular}
@@ -210,6 +206,14 @@ Another factor that affected the accuracy was the number of n-grams to be consid
 
 
 {\textbf {Language prediction using blogger prior: }} Now we describe the results obtained by including the blogger prior for every tweet that is being classified. Best results were obtained by using $w = 0.4$ in equation (1) for calculating scores for every language. The results of predicting the language using our model with blogger prior is shown in Table 4. It can be seen that the accuracy has improved by around 4\%, and all languages are predicted correctly with an accuracy of at least 95\%.
+
+In order to show that adding blogger prior improves accuracy, we ran the experiment with two simple baselines: (1) Our model with tweet text only ($w$ = 0), and (2) Our model with blogger prior only ($w$ = 1).
+
+The first baseline is equivalent to the case where there was no blogger prior taken into consideration while predicting the languages -- this gave an accuracy of 92.2\%.
+
+In the second baseline, the language for the tweet was predicted as follows: for each input tweet, the author's blogger prior was given full weightage, and the tweet was labeled with the author's language only, without considering the tweet text. For example, if the blogger prior for a tweet posted by a user $U$ indicates that the author is tweeting in English, then all the tweets in the dataset that were written by the user $U$ were labeled as English. As we can see in Table 5, this gave an accuracy of 95.76\%.
+
+However, combining the blogger prior (having $w$ = 0.4) with our prediction on tweet text boosts the accuracy even further, thus adding value to the process of language identification.
 
 \begin{table}
 \begin{center}

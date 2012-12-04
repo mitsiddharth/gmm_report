@@ -55,8 +55,8 @@ The research by Chen (2011) \footnote[2]{http://blog.echen.me/2011/05/01/unsuper
 
 In this paper, we suggest ways for using unsupervised methods to avoid the task of manually labeling a huge amount of tweets. A similar problem was also tackled by Nigam et al. (2000) in which they suggest a combination of Naive Bayes and EM to classify text. Using this method, we need very little labeled data in order to classify large amounts of unlabeled text. Our method does not need any labeled text and is based on wordlists of languages and a simple heuristic. It relies on the fact that huge amounts of text would eventually help in converging to the correct model, with negligible errors. There are abundant tweets available via the Twitter API, and hence this method works very well.
 
-\section{High-confidence dictionary-based labeling algorithm}
-As mentioned earlier, getting labeled twitter data is not a trivial task. All methods which were based on training data used manually labeled tweets for their learning algorithms. However, this might restrict the number of tweets used for training to a few thousands. The language identification algorithm could perform better if it is trained using a lot more tweets. For this, an unsupervised way of getting labeled data is proposed. The method is quite simple -- use words from dictionary of languages and count the number of valid words and the proportion of such valid words from each language that has appeared in a tweet. If these values for a language $L$ in the tweet exceeds a certain threshold, then it can be labeled with $L$. We used Wiktionary, which is a freely available source of wordlists, for building wordlists for languages. Initial experiments showed that the unsupervised labeling algorithm achieves more than 90\% accuracy when the threshold for the number of valid words is set to 4 and proportion of valid words was set to 0.6. If the criterion is not met, the tweet is ignored. In this way, a lot of accurately labeled tweets can be collected. Even though all tweets might not be labeled, the fact that the labeling operation is unsupervised gives a powerful method to acquire large amounts of labeled training data. Also, slight inaccuracies in identifying the labels using this approach are negligible, as the number of tweets is very high.
+\section{High-confidence dictionary-based labeling algorithm for collecting training data}
+As mentioned earlier, getting labeled twitter data is not a trivial task. All methods which were based on training data used manually labeled tweets for their learning algorithms. However, this might restrict the number of tweets used for training to a few thousands. The language identification algorithm could perform better if it is trained using a lot more tweets. For this, an unsupervised way of getting labeled data is proposed. The method is quite simple -- use words from dictionary of languages and count the number of valid words and the proportion of such valid words from each language that has appeared in a tweet. If these values for a language $L$ in the tweet exceeds a certain threshold, then it can be labeled with $L$. We used Wiktionary, which is a freely available source of wordlists, for building wordlists for languages. Initial experiments showed that the unsupervised labeling algorithm achieves more than 89\% accuracy when the threshold for the number of valid words is set to 4 and proportion of valid words was set to 0.6. If the criterion is not met, the tweet is ignored. In this way, a lot of accurately labeled tweets can be collected. Even though all tweets might not be labeled, the fact that the labeling operation is unsupervised gives a powerful method to acquire large amounts of labeled training data. Also, slight inaccuracies in identifying the labels using this approach are negligible, as the number of tweets is very high.
 
 The above method was run on a dataset containing more than 10 million tweets, and the number of tweets that were labeled by the above algorithm is tabulated in Table 1.
 
@@ -79,7 +79,29 @@ Dutch & 142666 \\ \hline
 
 The first step is to acquire labeled tweets using the technique described above. Also, currently, the languages that would be considered are -- English, Spanish, German, French, Dutch and Unknown. If enough words are not found from these languages in a tweet, it is ignored. A tweet is labeled `Unknown' if the number of words in the tweet that does not match any of the known dictionary words exceeds a certain threshold. For example, if a tweet contains 10 words, out of which only 1 word is recognizable as English, then it means that the tweet contains 90\% unknown words and hence labeled `Unknown'.	
 
-Once a set of labeled tweets is obtained, a language model is built for each language using this training data. These are built using character n-gram frequencies. Even though there have been approaches based on character n-grams, our approach is different in the sense that -- the data is obtained automatically from twitter, and a huge amount of tweets will be used for generating the language models, without using formal text from any other sources. We expect this to be a better representative of the actual tweets, and hence produce better results.
+Once a set of labeled tweets is obtained, a language model is built for each language using this training data. Each language's model is a set of character n-grams sorted in descending order of frequncy of their occurrence. Only the top 500 such n-grams are retained. Now, for a given input tweet $T$, its language is detected by using rank-correlation as shown below.\\
+
+$ score(l) = \sum_{n \in ngrams(T)} | r_{model}(n) - r_T(n) | $
+\\
+\par
+$ label(T) = \operatorname*{arg\,min}_{l \in \{S\}} score(l) $ \\
+
+\par
+where,
+\begin{itemize}
+\item $l$ = language
+\item $S$ is the set of supported languages
+\item $S$ is the set of supported languages
+\item $score(l)$ = the rank correlation score assigned to language $l$
+\item $label(T)$ = the final label predicted by the model for tweet $T$
+\item $r_{model}(n)$ = Rank of the n-gram $n$ in the list of n-grams for the language $l$
+\item $r_T(n)$ = Rank of n-gram $n$ in the list of n-grams generated from the tweet $T$
+\end{itemize}
+
+In other words, the \emph{distance} between the given tweet and a language $l$ is calculated based on the ranks of character n-grams. Then, the language which is at the least distance from the given tweet is the predicted label of our model.
+Even though there have been approaches based on character n-grams, our approach is different in the sense that -- the data is obtained automatically from twitter, and a huge amount of tweets will be used for generating the language models, without using formal text from any other sources. We expect this to be a better representative of the actual tweets, and hence produce better results.
+
+The High-confidence Dictionary-based labeling algorithm (HCDL) is used only to get labeled training data, and not for the actual prediction task. For the language identification task, TextCat is used on our model described above. This is explained in the next section.
 
 \section{Language detection}
 For classifying an unlabeled tweet, the character n-grams of the tweet were generated (where n ranges from 1 to 5), and the correct language was identified using TextCat, a text categorization tool. In order to generate a model that is compatible with TextCat, the n-grams were sorted in descending order of their counts. Also, not all the n-grams were included in the language model. Top 500 character n-grams were taken into consideration because there is a possibility of error as the counts of n-grams decreases. Initial experiments show that top 500 n-grams give best results (Figure 2).
@@ -91,6 +113,8 @@ Once the blogger prior is calculated, it is combined with the prediction for act
 \begin{eqnarray}
 {\lambda}_{combined} = w * {\lambda}_{blogger} + (1 - w) * {\lambda}_{tweet} 
 \end{eqnarray}
+where $w$ is the weightage given to our prior knowledge about the blogger, ${\lambda}_{blogger}$ is the score calculated by TextCat on the blogger's tweets, ${\lambda}_{tweet}$ is the score calculated by TextCat on the given input tweet.
+
 As mentioned in Carter et al. (2012), including the blogger prior does improve the accuracy of language prediction task. It was seen that with this single additional prior, overall accuracy of over 96\% was achieved by our language models. More details are discussed in the results section.
 
 \section{Data set}
@@ -169,7 +193,7 @@ Dutch     & 89.89 & 95.24 & 94.12 & 95.52 & 91.97 & 93.50 & 98.53 & 98.7 \\
 \textbf{Overall accuracy} & \multicolumn{2}{|c||}{\textbf{92.2}} & \multicolumn{2}{|c||}{\textbf{96.76}} & \multicolumn{2}{|c||}{\textbf{92.702}} & \multicolumn{2}{|c|}{\textbf{97.01}} \\
 \hline
 \end{tabular}
-\caption{\footnotesize Summary of results.}
+\caption{\footnotesize Summary of results. In the first row, \emph{BP} = blogger prior, \emph{No geo} indicates the model that was trained on all tweets, \emph{Geo} indicates the model that was trained on ``highly reliable'' regions by taking geo-location into consideration. }
 \end{center}
 \end{table*}
 
@@ -180,11 +204,11 @@ Dutch     & 89.89 & 95.24 & 94.12 & 95.52 & 91.97 & 93.50 & 98.53 & 98.7 \\
 \hline
 \textbf{Approach} & \textbf{Accuracy} \\
 \hline
-Dictionary based baseline & 71.67 \\
-Carter et al (2012) with blogger prior & 97.4 \\
+Dictionary based baseline                 & 71.67 \\
+Carter et al (2012) with blogger prior    & 97.4 \\
 Carter et al (2012) without blogger prior & 92.4 \\
-Our model with blogger prior ($w$ = 1) & 95.76 \\
-Our model with tweet text only ($w$ = 0)& 92.2 \\
+Our model with blogger prior ($w$ = 1)    & 95.76 \\
+Our model with tweet text only ($w$ = 0)  & 92.2 \\
 Our model with combined prior ($w$ = 0.4) & 97.01 \\
 
 \hline
@@ -215,25 +239,10 @@ In the second baseline, the language for the tweet was predicted as follows: for
 
 However, combining the blogger prior (having $w$ = 0.4) with our prediction on tweet text boosts the accuracy even further, thus adding value to the process of language identification.
 
-\begin{table}
-\begin{center}
-\small
-\begin{tabular}{|c|c|}
-\hline
-\textbf{Language} & \textbf{Accuracy} \\
-\hline
-English & 96.34 \\
-Spanish & 95.23 \\
-German & 97.59 \\
-French & 97.06 \\
-Dutch & 97.62 \\ \hline
-\multicolumn{2}{|c|}{\textbf{Overall accuracy = 96.76}} \\\hline
-\end{tabular}
-\caption{\footnotesize Performance of language prediction task based on our model after using blogger prior}
-\end{center}
-\end{table}
+\subsection{Tweets in unknown languages}
+In our approach, we also introduce an explicit `Unknown' label for those tweets which are not in one of the 5 languages (English, Spanish, French, Dutch, German). Carter et al (2012) had datasets only for these 5 languages because they did not deal with unknown languages. In order to measure the performance of our approach, we created a development and test set containing 500 tweets each, for unknown languages. Tweets were collected from regions like China, Japan, Korea, Saudi Arabia, Malaysia, Singapore etc. and were manually verified to ensure that they were not in any of the 5 languages that we support. On running the prediction task on the unknown tweets, we got an overall accuracy of 91.1\% on the dataset for `Unknown' tweets. To get a better idea of the performance of our model, 100,000 geolocated tweets were collected from the Twitter stream, and our model was used to predict languages of \emph{all} the tweets on this set. Figure 3 shows the plot of the `Unknown' language over the surface of the earth. It can be seen that most unknown tweets are from the regions where the 5 supported languages are not spoken. However, after examining a similar plot for English, we could observe that our approach had labeled a lot of tweets from Indonesia and Malaysia regions as English, which are erroneous. The number of unknown tweets from that region are larger than the number that is actually being shown in Figure 3. One possible reason for this could be that the Malay and Indonesian languages also have Latin script, and hence a strongly correlated with English, which misleads the model.
 
-\section{Using geo-location information to build better models}
+\subsection{Using geo-location information to build better models}
 One way to improve the model is by using geo-located tweets. Since people speaking the same languages tend to exist in the form of clusters, we could get a better model for a language by getting tweets from a region where there are a lot of speakers of that language. For example, in order to model the English language, some of the best places to get the tweets from would be UK and US regions. This could potentially give a better model, and hence improve the results.
 
 \begin{figure*}[ht]
@@ -244,7 +253,7 @@ One way to improve the model is by using geo-located tweets. Since people speaki
 
 In order to achieve this, the surface of the earth was divided into $1^{\circ}$ by $1^{\circ}$ geo-desic cells (similar to what was done in Wing and Baldridge (2011)). The geo-located tweets in each cell were then labeled using the High-confidence Dictionary-based approach. This would give us the probability distribution of languages for a particular cell. In other words, we have the relative frequencies of each language's occurrence in a given cell. We are likely to get better models for a language in regions where the relative frequency of that language is very high. For our experiments, optimal results were obtained when this threshold was set to 0.6. A cell is called ``highly reliable'' for a language $L$ if the relative frequency of tweets from that cell which are labeled as $L$ is at least 0.6.
 
-Figure 3 plots the $1^{\circ}$ by $1^{\circ}$ cells which have a high relative frequency for tweets labeled as ``Unknown'' by the High-confidence Dictionary-based approach. We can see clearly that regions like Saudi Arabia, China, Japan Korea, Thailand and parts of Europe are the predominant areas from where the tweets are labeled ``Unknown''. Similar plots were obtained for other languages as well, and the plots showed that using tweets from regions having high relative frequency for a language were much clearer and helped in reducing the noise. (This was visually verified, based on the language and the regions plotted on the map. For example, the ``highly reliable'' regions for Spanish tweets had a lot of cells in Mexico, Spain and South American regions. However, if we plotted all tweets labeled Spanish, we got a plot which contained a lot of noise -- mostly because of some isolated tweets or wrongly-labeled tweets).
+%Figure 3 plots the $1^{\circ}$ by $1^{\circ}$ cells which have a high relative frequency for tweets labeled as ``Unknown'' by the High-confidence Dictionary-based approach. We can see clearly that regions like Saudi Arabia, China, Japan Korea, Thailand and parts of Europe are the predominant areas from where the tweets are labeled ``Unknown''. Similar plots were obtained for other languages as well, and the plots showed that using tweets from regions having high relative frequency for a language were much clearer and helped in reducing the noise. (This was visually verified, based on the language and the regions plotted on the map. For example, the ``highly reliable'' regions for Spanish tweets had a lot of cells in Mexico, Spain and South American regions. However, if we plotted all tweets labeled Spanish, we got a plot which contained a lot of noise -- mostly because of some isolated tweets or wrongly-labeled tweets).
 
 The character n-grams collected from these ``highly reliable'' regions were then used in the model to predict languages in tweets. The results are reported in Table 3. We can see clearly that collecting training data from only the relevant regions increases the accuracy of prediction slightly. As in the other methods, when combined with the blogger prior of the tweet authors, the accuracy improves greatly. This approach gives the best overall accuracy for language identification task.
 

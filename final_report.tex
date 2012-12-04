@@ -223,7 +223,7 @@ It can be seen from Table 3 that, the model identifies the correct language with
 Another factor that affected the accuracy was the number of n-grams to be considered while generating the language model. TextCat uses these n-grams to detect the languages. We found that the top 500 n-grams were giving best results. This can be attributed to the fact that, as the number of n-grams considered increases, there are more chances of errors as well, since the models were generated based on a heuristic. Figure 2 shows the accuracy as the number of n-grams increases. We can see clearly that the highest accuracy is achieved for the case when we consider the top 500 n-grams.
 
 \begin{figure}[ht]
-\includegraphics[scale=0.35]{ngramVsAccuracy.png}
+\includegraphics[scale=0.35]{ngramsVsAccuracy.png}
 \caption{\footnotesize Accuracy of language detection Vs number of n-grams considered in the model}
 \label{fig:s3}
 \end{figure}
